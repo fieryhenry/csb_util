@@ -14,6 +14,8 @@ def get_error_text(error: csb.ReadError):
         return None
     if error == csb.ReadError.INVALID_CSB_MAGIC:
         return "Invalid CSB file magic, are you sure this a csb file?"
+    if error == csb.ReadError.INVALID_BYTE_ORDER:
+        return "Invalid CSB byte order"
     if error == csb.ReadError.INVALID_STRP_MAGIC:
         return "Invalid STRP block magic"
     if error == csb.ReadError.INVALID_LNP_MAGIC:
@@ -114,7 +116,7 @@ def main():
     actions = parser.add_subparsers(
         title="actions",
         description="actions to decode or encode csb files",
-        help="show action help with 'python -m csb {decode,encode} --help'",
+        help="show action help with 'python -m csb_util {decode,encode} --help'",
     )
     decode_parser = actions.add_parser(
         "decode",
@@ -143,11 +145,11 @@ def main():
         "--outdir",
         "-o",
         required=True,
-        help="output directory to place decoded csv files in",
+        help="output directory to place the decoded csv files in",
         dest="doutdir",
     )
     decode_parser.add_argument(
-        "--ignore", "-i", action="store_true", help="ignore any non-csv files given"
+        "--ignore", "-i", action="store_true", help="ignore any non-csb files given"
     )
     decode_parser.add_argument(
         "--skip-validate",
@@ -198,7 +200,7 @@ def main():
         help="byte order, can be little endian ('<') or big endian ('>'). Defaults to little.",
     )
     encode_parser.add_argument(
-        "--ignore", "-i", action="store_true", help="ignore any non-csb files given"
+        "--ignore", "-i", action="store_true", help="ignore any non-csv files given"
     )
 
     args = parser.parse_args(sys.argv[1:])
