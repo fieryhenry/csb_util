@@ -52,11 +52,12 @@ def decode(
     for file in files:
         with open(file, "rb") as f:
             lines, err = csb.read_csb(f, not skip_validation)
-            if lines is None:
-                if not silent:
-                    error_text = get_error_text(err)
-                    print(error_text)
-                exit(err.value)
+
+        if lines is None:
+            if not silent:
+                error_text = get_error_text(err)
+                print(error_text)
+            exit(err.value)
 
         filename = os.path.basename(file)
         filename = get_csv_name(filename)
@@ -85,8 +86,8 @@ def encode(
         with open(file, "r", encoding="utf-8", errors="ignore") as f:
             lines = csb.read_csv(f)
 
-            filename = os.path.basename(file)
-            filename = get_csb_name(filename)
+        filename = os.path.basename(file)
+        filename = get_csb_name(filename)
 
         outpath = os.path.join(outdir, filename)
 
